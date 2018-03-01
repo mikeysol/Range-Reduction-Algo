@@ -46,7 +46,7 @@ public class RangeTest {
     }
 
     @Test
-    public void reduceIterativeSequentialIntRange() {
+    public void reduceSequentialIntRange() {
         Integer[] zipIntRange = {0,1};
         Integer[] zipIntRange2 = {2,3};
         Integer[] zipIntRange3 = {4,4};
@@ -112,7 +112,7 @@ public class RangeTest {
     }
 
     @Test
-    public void reduceIterativeInteger() {
+    public void reduceInteger() {
         Integer[] zipIntRange = {0,1};
         Integer[] zipIntRange2 = {2,3};
         Integer[] zipIntRange3 = {4,4};
@@ -145,10 +145,11 @@ public class RangeTest {
     }
 
     @Test
-    public void reduceIterativeIntegerEmptyArrays() {
+    public void reduceIntegerEmptyArrays() {
         Integer[] zipIntRange = {null,null};
         Integer[] zipIntRange2 = {2,3};
         Integer[] zipIntRange3 = new Integer[0];
+
         List<Integer[]> ranges = new ArrayList<>();
         ranges.add(zipIntRange);
         ranges.add(zipIntRange2);
@@ -159,6 +160,54 @@ public class RangeTest {
         Integer[] reducedIntRange = {2,3};
         List<Integer[]> reduced = new ArrayList<>();
         reduced.add(reducedIntRange);
+
+
+        assertEquals(
+                result.stream().map(Arrays::asList).collect(toList()),
+                reduced.stream().map(Arrays::asList).collect(toList())
+        );
+    }
+
+    @Test
+    public void reduceWithEmptyList() {
+
+        List<Integer[]> ranges = new ArrayList<>();
+
+        List<Integer[]> result = new Range().reduce(ranges);
+
+        List<Integer[]> reduced = new ArrayList<>();
+
+        assertEquals(
+                result,
+                reduced
+        );
+    }
+
+    @Test
+    public void reduceIntegerDuplicates() {
+        Integer[] zipIntRange = {0,0};
+        Integer[] zipIntRange2 = {2,3};
+        Integer[] zipIntRange3 = {0,0};
+        Integer[] zipIntRange4 = {1,1};
+        Integer[] zipIntRange5 = {8,7};
+        Integer[] zipIntRange6 = {7,8};
+        Integer[] zipIntRange7 = {9,9};
+        List<Integer[]> ranges = new ArrayList<>();
+        ranges.add(zipIntRange);
+        ranges.add(zipIntRange2);
+        ranges.add(zipIntRange3);
+        ranges.add(zipIntRange4);
+        ranges.add(zipIntRange5);
+        ranges.add(zipIntRange6);
+        ranges.add(zipIntRange7);
+
+        List<Integer[]> result = new Range().reduce(ranges);
+
+        Integer[] reducedIntRange = {0,3};
+        Integer[] reducedIntRange2 = {7,9};
+        List<Integer[]> reduced = new ArrayList<>();
+        reduced.add(reducedIntRange);
+        reduced.add(reducedIntRange2);
 
 
         assertEquals(
